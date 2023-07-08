@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Server.Emulator.Tools;
+namespace Plugin.Tools;
 
 public class CoroutineHelper : MonoBehaviourSingleton<CoroutineHelper>
 {

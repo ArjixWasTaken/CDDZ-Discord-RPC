@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Server.Emulator.Tools;
+namespace Plugin.Tools;
 
 public class MonoBehaviourSingleton<TSelfType> : MonoBehaviour where TSelfType : MonoBehaviour
 {

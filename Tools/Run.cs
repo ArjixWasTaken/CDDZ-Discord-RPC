@@ -3,7 +3,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Server.Emulator.Tools;
+namespace Plugin.Tools;
 
 public class Run
 {

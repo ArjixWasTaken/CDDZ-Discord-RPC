@@ -2,7 +2,7 @@
 using CDInDeeZ.Extensions;
 using JetBrains.Annotations;
 using Discord;
-using Server.Emulator.Tools;
+using Plugin.Tools;
 
 namespace CDInDeeZ;
 

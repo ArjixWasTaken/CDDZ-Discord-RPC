@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Server.Emulator.Tools;
+namespace Plugin.Tools;
 
 public static class IEnumeratorToArray
 {
