@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net46</TargetFramework>
+        <AssemblyName>CDInDeeZ</AssemblyName>
+        <Description>My first plugin</Description>
+        <Version>1.0.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <RootNamespace>CDInDeeZ</RootNamespace>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+        <PackageReference Include="UnityEngine.Modules" Version="5.6.0" IncludeAssets="compile" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>libs\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-CSharp-firstpass">
+        <HintPath>libs\Assembly-CSharp-firstpass.dll</HintPath>
+      </Reference>
+      <Reference Include="bolt">
+        <HintPath>libs\bolt.dll</HintPath>
+      </Reference>
+      <Reference Include="bolt.user">
+        <HintPath>libs\bolt.user.dll</HintPath>
+      </Reference>
+      <Reference Include="udpkit">
+        <HintPath>libs\udpkit.dll</HintPath>
+      </Reference>
+      <Reference Include="udpkit.common">
+        <HintPath>libs\udpkit.common.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>libs\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+        <HintPath>libs\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.IMGUIModule">
+        <HintPath>libs\UnityEngine.IMGUIModule.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="powershell –command &quot;&amp; { $(SolutionDir)/onbuild.ps1 '$(TargetPath)' }&quot;" />
+    </Target>
+</Project>
