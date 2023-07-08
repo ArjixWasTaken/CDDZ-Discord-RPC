@@ -13,4 +13,4 @@ This is a mod that adds discord RPC to the game, which allows you to send party 
 ## Message to doborog
 
 You are free to use my code w/o any requirement. <br />
-A sponsor would be nice :) but only if you feel like it.
+A github sponsor would be nice :) but only if you feel like it.
