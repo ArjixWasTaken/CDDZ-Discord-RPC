@@ -5,7 +5,7 @@ This is a mod that adds discord RPC to the game, which allows you to send party 
 ## Current features
 - Send party invite to channel.
 - Auto accept (implicit) friend's requests to join your party.
-- Join party *(untested)*
+- Join party
 
 [Download here](https://github.com/ArjixWasTaken/CDDZ-Discord-RPC/releases/latest)
 
