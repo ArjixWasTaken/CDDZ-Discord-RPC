@@ -51,19 +51,47 @@ public class RichPresence
 
         activityManager.OnActivityJoin += secret =>
         {
-            var split = secret.Split('_');
+            Singleton<MultiplayerLoginManager>.Instance.AuthorizeWithPlayfab();
 
-            BoltGlobalEventListenerSingleton<MultiplayerMatchmakingManager>.Instance.FindAndJoinMatch(new()
+            var split = secret.Split('_');
+            var inviteCode = split.Last();
+            
+            var gameMode = (GameMode)int.Parse(split.First());
+            var gameRequestType = (gameMode == GameMode.CoopChallenge ?
+                GameRequestType.CoopChallengeInviteJoin :
+                (gameMode == GameMode.EndlessCoop ?
+                    GameRequestType.CoopInviteCodeJoin :
+                    (gameMode == GameMode.BattleRoyale ?
+                        GameRequestType.BattleRoyaleInviteCodeJoin :
+                        GameRequestType.DuelInviteCodeJoin)));
+            
+            RichPresenceLogger.LogWarning($"Invite Code: {inviteCode}");
+            RichPresenceLogger.LogWarning($"Game Request Type: {gameRequestType}");
+
+            var gameRequest = new GameRequest()
             {
                 InviteCodeToJoin = split.Last(),
-                GameType = ((GameMode)int.Parse(split.First())) switch
+                GameType = gameRequestType,
+                ActuallyStartServer = true,
+            };
+            
+            Singleton<CustomMatchmakerClientAPI>.Instance.FindMatch(new CustomMatchmakeRequest
+            {
+                GameRequest = gameRequest
+            }, delegate(CustomMatchmakeResult result)
+            {
+                BoltGlobalEventListenerSingleton<MultiplayerMatchmakingManager>.Instance.ConnectToExternalMatchmakeResult(result, gameRequest);
+            }, delegate(CustomMatchmakerError error)
+            {
+                switch (error.Type)
                 {
-                    GameMode.CoopChallenge => GameRequestType.CoopChallengeInviteJoin,
-                    GameMode.EndlessCoop => GameRequestType.CoopInviteCodeJoin,
-                    GameMode.BattleRoyale => GameRequestType.BattleRoyaleInviteCodeJoin,
-                    GameMode.MultiplayerDuel => GameRequestType.DuelInviteCodeJoin
-                },
-                ActuallyStartServer = false,
+                    case CustomMatchmakerErrorType.InviteMatchFull:
+                        RichPresenceLogger.LogError("Match is full!");
+                        break;
+                    case CustomMatchmakerErrorType.InviteCodeNotFound:
+                        RichPresenceLogger.LogError("Match not found!");
+                        break;
+                }
             });
         };
 
